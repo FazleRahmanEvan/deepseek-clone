@@ -24,7 +24,21 @@ export default function Home() {
             <Image className="opacity-70" src={assets.chat_icon} alt="" />
           </div>
 
-          {messages.length === 0 ? <></> : <div></div>}
+          {messages.length === 0 ? (
+            <>
+              <div className="flex items-center gap-3">
+                <Image src={assets.logo_icon} alt="" className="h-16" />
+                <p className="text-2xl font-medium">Hi, I'm DeepSeek</p>
+              </div>
+              <p className="text-sm mt-2">How can I help you today?</p>
+            </>
+          ) : (
+            <div></div>
+          )}
+          {/* prompt box */}
+          <p className="text-xs absolute bottom-1 text-gray-500">
+            AI-genereted, for reference only
+          </p>
         </div>
       </div>
     </div>
