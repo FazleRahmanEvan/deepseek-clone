@@ -22,7 +22,7 @@ const ChatLabel = ({ openMenu, setOpenMenu }) => {
             <p>Rename</p>
           </div>
           <div className="flex items-center gap-3 hover:bg-white/10 px-3 py-2 rounded-lg">
-            <Image src={assets.delete_icon_icon} alt="" className="w-4" />
+            <Image src={assets.delete_icon} alt="" className="w-4" />
             <p>Delete</p>
           </div>
         </div>
