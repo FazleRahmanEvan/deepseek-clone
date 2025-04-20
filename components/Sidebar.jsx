@@ -2,9 +2,11 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import React from "react";
 import { useClerk, UserButton } from "@clerk/nextjs";
+import { useAppContext } from "@/context/AppContext";
 
 const Sidebar = ({ expand, setExpand }) => {
   const { openSignIn } = useClerk();
+  const { user } = useAppContext();
 
   return (
     <div
@@ -117,12 +119,17 @@ const Sidebar = ({ expand, setExpand }) => {
         </div>
 
         <div
-          onClick={openSignIn}
+          onClick={user ? null : openSignIn}
           className={`flex items-center ${
             expand ? "hover:bg-white/10 rounded-lg" : "justify-center w-full"
           } gap-3 text-white/60 text-sm p-2 mt-2 cursor-pointer`}
         >
-          <Image src={assets.profile_icon} alt="" className="w-7" />
+          {user ? (
+            <UserButton />
+          ) : (
+            <Image src={assets.profile_icon} alt="" className="w-7" />
+          )}
+
           {expand && <span>My Profile</span>}
         </div>
       </div>
