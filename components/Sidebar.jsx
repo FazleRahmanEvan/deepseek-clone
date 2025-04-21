@@ -7,7 +7,7 @@ import ChatLabel from "./ChatLabel";
 
 const Sidebar = ({ expand, setExpand }) => {
   const { openSignIn } = useClerk();
-  const { user } = useAppContext();
+  const { user, chats, createNewChat } = useAppContext();
   const [openMenu, setOpenMenu] = useState({ id: 0, open: false });
 
   return (
@@ -25,20 +25,23 @@ const Sidebar = ({ expand, setExpand }) => {
           <Image
             className={expand ? "w-36" : "w-10"}
             src={expand ? assets.logo_text : assets.logo_icon}
-            alt=""
+            alt={expand ? "logo_text" : "logo_icon"}
           />
 
           <div
             onClick={() => (expand ? setExpand(false) : setExpand(true))}
             className="group relative flex items-center justify-center hover:bg-gray-500/20 transition-all duration-300 h-9 w-9 aspect-square rounded-lg cursor-pointer"
           >
-            <Image src={assets.menu_icon} alt="" className="md:hidden" />
+            <Image
+              src={assets.menu_icon}
+              alt="menu icon"
+              className="md:hidden"
+            />
             <Image
               src={expand ? assets.sidebar_close_icon : assets.sidebar_icon}
-              alt=""
+              alt={expand ? "sidebar_close_icon" : "sidebar_icon"}
               className="hidden md:block w-7"
             />
-
             <div
               className={`absolute w-max ${
                 expand ? "left-1/2 -translate-x-1/2 top-12" : "-top-12 left-0"
@@ -57,6 +60,7 @@ const Sidebar = ({ expand, setExpand }) => {
         </div>
 
         <button
+          onClick={createNewChat}
           className={`mt-8 flex items-center justify-center cursor-pointer ${
             expand
               ? "bg-primary hover:opacity-90 rounded-2xl gap-2 p-2.5 w-max"
@@ -66,13 +70,13 @@ const Sidebar = ({ expand, setExpand }) => {
           <Image
             className={expand ? "w-6" : "w-7"}
             src={expand ? assets.chat_icon : assets.chat_icon_dull}
-            alt=""
+            alt={expand ? "chat_icon" : "chat_icon_dull"}
           />
           <div className="absolute w-max -top-12 -right-12 opacity-0 group-hover:opacity-100 transition bg-black text-white text-sm px-3 py-2 rounded-lg shaow-lg pointer-events-none">
-            New Chat
+            New chat
             <div className="w-3 h-3 absolute bg-black rotate-45 left-4 -bottom-1.5"></div>
           </div>
-          {expand && <p className="text-white text font-medium"> New Chat</p>}
+          {expand && <p className="text-white text font-medium">New chat</p>}
         </button>
 
         <div
@@ -81,7 +85,15 @@ const Sidebar = ({ expand, setExpand }) => {
           }`}
         >
           <p className="my-1">Recents</p>
-          <ChatLabel openMenu={openMenu} setOpenMenu={setOpenMenu} />
+          {chats.map((chat, index) => (
+            <ChatLabel
+              key={index}
+              name={chat.name}
+              id={chat._id}
+              openMenu={openMenu}
+              setOpenMenu={setOpenMenu}
+            />
+          ))}
         </div>
       </div>
 
@@ -96,7 +108,7 @@ const Sidebar = ({ expand, setExpand }) => {
           <Image
             className={expand ? "w-5" : "w-6.5 mx-auto"}
             src={expand ? assets.phone_icon : assets.phone_icon_dull}
-            alt=""
+            alt={expand ? "phone_icon" : "phone_icon_dull"}
           />
           <div
             className={`absolute -top-60 pb-8 ${
@@ -104,7 +116,7 @@ const Sidebar = ({ expand, setExpand }) => {
             } opacity-0 group-hover:opacity-100 hidden group-hover:block transition`}
           >
             <div className="relative w-max bg-black text-white text-sm p-3 rounded-lg shadow-lg">
-              <Image src={assets.qrcode} alt="" className="w-44" />
+              <Image className="w-44" src={assets.qrcode} alt="qrcode" />
               <p>Scan to get DeepSeek App</p>
               <div
                 className={`w-3 h-3 absolute bg-black rotate-45 ${
@@ -115,7 +127,8 @@ const Sidebar = ({ expand, setExpand }) => {
           </div>
           {expand && (
             <>
-              <span>Get App</span> <Image src={assets.new_icon} alt="" />
+              {" "}
+              <span>Get App</span> <Image src={assets.new_icon} alt="" />{" "}
             </>
           )}
         </div>
@@ -129,7 +142,11 @@ const Sidebar = ({ expand, setExpand }) => {
           {user ? (
             <UserButton />
           ) : (
-            <Image src={assets.profile_icon} alt="" className="w-7" />
+            <Image
+              src={assets.profile_icon}
+              alt="profile_icon"
+              className="w-7"
+            />
           )}
 
           {expand && <span>My Profile</span>}
